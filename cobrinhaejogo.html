@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="História e códigos do jogo da cobrinha (Snake) em JavaScript, Python e C# para aprendizado." />
+  <meta name="keywords" content="Jogo da cobrinha, Snake, código JavaScript, código Python, código C#, programação, tutorial" />
+  <title>História e Código do Jogo da Cobrinha | Snake Game</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f9f9f9;
+      color: #222;
+      margin: 20px;
+      line-height: 1.5;
+    }
+    header {
+      max-width: 900px;
+      margin: 0 auto 20px;
+      text-align: center;
+    }
+    main {
+      max-width: 900px;
+      margin: 0 auto;
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 8px rgba(0,0,0,0.1);
+    }
+    h1, h2 {
+      color: #004080;
+    }
+    p {
+      margin-bottom: 1rem;
+      font-size: 1.1rem;
+    }
+    code {
+      display: block;
+      white-space: pre;
+      background-color: #272822;
+      color: #f8f8f2;
+      padding: 1em;
+      border-radius: 5px;
+      overflow-x: auto;
+      margin-bottom: 2rem;
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 0.9rem;
+      line-height: 1.4;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>História e Código do Jogo da Cobrinha (Snake)</h1>
+  </header>
+
+  <main>
+    <section aria-labelledby="history-title">
+      <h2 id="history-title">História do Jogo da Cobrinha</h2>
+      <p>
+        O jogo da cobrinha, conhecido internacionalmente como "Snake", é um dos jogos eletrônicos mais clássicos e populares. 
+        Surgiu na década de 1970 em computadores e ganhou fama nos anos 1990 com sua implementação em celulares Nokia. 
+        O objetivo do jogo é controlar uma cobrinha que cresce ao comer objetos na tela, evitando colidir com as bordas ou com o próprio corpo. 
+        É um jogo simples, mas que exige raciocínio rápido e habilidade, sendo muito usado para aprendizado de programação.
+      </p>
+    </section>
+
+    <section aria-labelledby="js-code-title">
+      <h2 id="js-code-title">Código em JavaScript</h2>
+      <code>
+{`// Código simples do jogo da cobrinha em JavaScript (exibido como texto)
+const canvas = document.getElementById('game');
+const ctx = canvas.getContext('2d');
+const box = 32;
+
+let snake = [];
+snake[0] = { x: 9 * box, y: 10 * box };
+
+let food = {
+  x: Math.floor(Math.random()*17+1) * box,
+  y: Math.floor(Math.random()*15+3) * box
+};
+
+let score = 0;
+let d;
+
+document.addEventListener('keydown', direction);
+
+function direction(event){
+  if(event.keyCode == 37 && d != 'RIGHT'){
+    d = 'LEFT';
+  } else if(event.keyCode == 38 && d != 'DOWN'){
+    d = 'UP';
+  } else if(event.keyCode == 39 && d != 'LEFT'){
+    d = 'RIGHT';
+  } else if(event.keyCode == 40 && d != 'UP'){
+    d = 'DOWN';
+  }
+}
+
+function draw(){
+  ctx.fillStyle = 'lightgreen';
+  ctx.fillRect(0, 0, 608, 608);
+
+  for(let i = 0; i < snake.length; i++){
+    ctx.fillStyle = (i == 0) ? 'green' : 'darkgreen';
+    ctx.fillRect(snake[i].x, snake[i].y, box, box);
+  }
+
+  ctx.fillStyle = 'red';
+  ctx.fillRect(food.x, food.y, box, box);
+
+  let snakeX = snake[0].x;
+  let snakeY = snake[0].y;
+
+  if(d == 'LEFT') snakeX -= box;
+  if(d == 'UP') snakeY -= box;
+  if(d == 'RIGHT') snakeX += box;
+  if(d == 'DOWN') snakeY += box;
+
+  if(snakeX == food.x && snakeY == food.y){
+    score++;
+    food = {
+      x: Math.floor(Math.random()*17+1) * box,
+      y: Math.floor(Math.random()*15+3) * box
+    };
+  } else {
+    snake.pop();
+  }
+
+  let newHead = { x: snakeX, y: snakeY };
+
+  // Colisão com corpo
+  for(let i = 0; i < snake.length; i++){
+    if(snake[i].x == newHead.x && snake[i].y == newHead.y){
+      clearInterval(game);
+      alert('Fim de jogo! Seu placar: ' + score);
+    }
+  }
+
+  // Colisão com bordas
+  if(snakeX < 0 || snakeX >= 608 || snakeY < 0 || snakeY >= 608){
+    clearInterval(game);
+    alert('Fim de jogo! Seu placar: ' + score);
+  }
+
+  snake.unshift(newHead);
+
+  ctx.fillStyle = 'white';
+  ctx.font = '45px Changa one';
+  ctx.fillText(score, 2*box, 1.6*box);
+}
+
+let game = setInterval(draw, 100);`}
+      </code>
+    </section>
+
+    <section aria-labelledby="python-code-title">
+      <h2 id="python-code-title">Código em Python</h2>
+      <code>
+{`# Código simples do jogo da cobrinha em Python usando pygame (exibido como texto)
+import pygame
+import random
+
+pygame.init()
+
+screen = pygame.display.set_mode((600, 600))
+pygame.display.set_caption('Snake Game')
+
+clock = pygame.time.Clock()
+font = pygame.font.SysFont('Arial', 35)
+
+snake_block = 20
+snake_speed = 15
+
+def our_snake(snake_block, snake_list):
+    for x in snake_list:
+        pygame.draw.rect(screen, (0,255,0), [x[0], x[1], snake_block, snake_block])
+
+def message(msg, color):
+    mesg = font.render(msg, True, color)
+    screen.blit(mesg, [100, 250])
+
+def gameLoop():
+    game_over = False
+    game_close = False
+
+    x1 = 300
+    y1 = 300
+
+    x1_change = 0
+    y1_change = 0
+
+    snake_List = []
+    Length_of_snake = 1
+
+    foodx = round(random.randrange(0, 600 - snake_block) / 20.0) * 20.0
+    foody = round(random.randrange(0, 600 - snake_block) / 20.0) * 20.0
+
+    while not game_over:
+
+        while game_close == True:
+            screen.fill((0,0,0))
+            message("Você perdeu! Pressione C para jogar novamente ou Q para sair", (255,0,0))
+            pygame.display.update()
+
+            for event in pygame.event.get():
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_q:
+                        game_over = True
+                        game_close = False
+                    if event.key == pygame.K_c:
+                        gameLoop()
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                game_over = True
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_LEFT:
+                    x1_change = -snake_block
+                    y1_change = 0
+                elif event.key == pygame.K_RIGHT:
+                    x1_change = snake_block
+                    y1_change = 0
+                elif event.key == pygame.K_UP:
+                    y1_change = -snake_block
+                    x1_change = 0
+                elif event.key == pygame.K_DOWN:
+                    y1_change = snake_block
+                    x1_change = 0
+
+        if x1 >= 600 or x1 < 0 or y1 >= 600 or y1 < 0:
+            game_close = True
+
+        x1 += x1_change
+        y1 += y1_change
+        screen.fill((0,0,0))
+        pygame.draw.rect(screen, (255,0,0), [foodx, foody, snake_block, snake_block])
+        snake_Head = []
+        snake_Head.append(x1)
+        snake_Head.append(y1)
+        snake_List.append(snake_Head)
+        if len(snake_List) > Length_of_snake:
+            del snake_List[0]
+
+        for x in snake_List[:-1]:
+            if x == snake_Head:
+                game_close = True
+
+        our_snake(snake_block, snake_List)
+        pygame.display.update()
+
+        if x1 == foodx and y1 == foody:
+            foodx = round(random.randrange(0, 600 - snake_block) / 20.0) * 20.0
+            foody = round(random.randrange(0, 600 - snake_block) / 20.0) * 20.0
+            Length_of_snake += 1
+
+        clock.tick(snake_speed)
+
+    pygame.quit()
+    quit()
+
+gameLoop()`}
+      </code>
+    </section>
+
+    <section aria-labelledby="csharp-code-title">
+      <h2 id="csharp-code-title">Código em C#</h2>
+      <code>
+{`// Código simples do jogo da cobrinha em C# usando Windows Forms (exibido como texto)
+using System;
+using System.Collections.Generic;
+using System.Drawing;
+using System.Windows.Forms;
+
+public class SnakeGame : Form
+{
+    private List<Point> snake = new List<Point>();
+    private Point food;
+    private int direction = 0; // 0=right,1=down,2=left,3=up
+    private Timer timer = new Timer();
+    private int gridSize = 20;
+    private int score = 0;
+
+    public SnakeGame()
+    {
+        this.Width = 420;
+        this.Height = 440;
+        this.Text = "Snake Game";
+        this.DoubleBuffered = true;
+        snake.Add(new Point(5, 5));
+        GenerateFood();
+        timer.Interval = 100;
+        timer.Tick += Update;
+        timer.Start();
+        this.KeyDown += OnKeyDown;
+        this.Paint += OnPaint;
+    }
+
+    private void GenerateFood()
+    {
+        Random rnd = new Random();
+        food = new Point(rnd.Next(0, 20), rnd.Next(0, 20));
+    }
+
+    private void Update(object sender, EventArgs e)
+    {
+        Point head = snake[0];
+        Point newHead = head;
+
+        switch (direction)
+        {
+            case 0: newHead = new Point(head.X + 1, head.Y); break;
+            case 1: newHead = new Point(head.X, head.Y + 1); break;
+            case 2: newHead = new Point(head.X - 1, head.Y); break;
+            case 3: newHead = new Point(head.X, head.Y - 1); break;
+        }
+
+        // Checa colisões com paredes
+        if (newHead.X < 0 || newHead.X >= 20 || newHead.Y < 0 || newHead.Y >= 20)
+        {
+            timer.Stop();
+            MessageBox.Show("Game Over! Score: " + score);
+            this.Close();
+        }
+
+        // Checa colisão com o próprio corpo
+        if (snake.Contains(newHead))
+        {
+            timer.Stop();
+            MessageBox.Show("Game Over! Score: " + score);
+            this.Close();
+        }
+
+        snake.Insert(0, newHead);
+
+        if (newHead == food)
+        {
+            score++;
+            GenerateFood();
+        }
+        else
+        {
+            snake.RemoveAt(snake.Count - 1);
+        }
+
+        Invalidate();
+    }
+
+    private void OnPaint(object sender, PaintEventArgs e)
+    {
+        Graphics g = e.Graphics;
+        g.Clear(Color.Black);
+
+        // Desenha cobra
+        foreach (Point p in snake)
+        {
+            g.FillRectangle(Brushes.Green, p.X * gridSize, p.Y * gridSize, gridSize, gridSize);
+        }
+
+        // Desenha comida
+        g.FillRectangle(Brushes.Red, food.X * gridSize, food.Y * gridSize, gridSize, gridSize);
+    }
+
+    private void OnKeyDown(object sender, KeyEventArgs e)
+    {
+        switch(e.KeyCode)
+        {
+            case Keys.Left:
+                if (direction != 0) direction = 2;
+                break;
+            case Keys.Right:
+                if (direction != 2) direction = 0;
+                break;
+            case Keys.Up:
+                if (direction != 1) direction = 3;
+                break;
+            case Keys.Down:
+                if (direction != 3) direction = 1;
+                break;
+        }
+    }
+
+    [STAThread]
+    static void Main()
+    {
+        Application.EnableVisualStyles();
+        Application.Run(new SnakeGame());
+    }
+}`}
+      </code>
+    </section>
+
+  </main>
+  <table style="width:100%; border-collapse: collapse; font-family: Arial, sans-serif;">
+  <caption style="caption-side: top; font-weight: bold; font-size: 1.5rem; margin-bottom: 0.5rem; color: #007bff; text-align: left;">
+    Principais Jogos Mobile em Alta para 2025
+  </caption>
+  <thead>
+    <tr style="background-color: #007bff; color: white;">
+      <th style="padding: 0.75rem 1rem; border: 1px solid #ddd; text-align: left;">Jogo</th>
+      <th style="padding: 0.75rem 1rem; border: 1px solid #ddd; text-align: left;">Descrição</th>
+      <th style="padding: 0.75rem 1rem; border: 1px solid #ddd; text-align: left;">Referência</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="padding: 0.75rem 1rem; border: 1px solid #ddd;">Diablo Immortal</td>
+      <td style="padding: 0.75rem 1rem; border: 1px solid #ddd;">RPG de ação da Blizzard com novas expansões e conteúdo atualizado para 2025.</td>
+      <td style="padding: 0.75rem 1rem; border: 1px solid #ddd;"><a href="https://diabloimmortal.com/" target="_blank" rel="noopener noreferrer">diabloimmortal.com</a></td>
+    </tr>
+    <tr>
+      <td style="padding: 0.75rem 1rem; border: 1px solid #ddd;">Call of Duty: Warzone Mobile</td>
+      <td style="padding: 0.75rem 1rem; border: 1px solid #ddd;">FPS Battle Royale otimizado para celular com gráficos de alta qualidade.</td>
+      <td style="padding: 0.75rem 1rem; border: 1px solid #ddd;"><a href="https://www.callofduty.com/mobile" target="_blank" rel="noopener noreferrer">callofduty.com/mobile</a></td>
+    </tr>
+    <tr>
+      <td style="padding: 0.75rem 1rem; border: 1px solid #ddd;">PUBG: New State</td>
+      <td style="padding: 0.75rem 1rem; border: 1px solid #ddd;">Evolução futurista do PUBG com mapas e mecânicas novas para mobile.</td>
+      <td style="padding: 0.75rem 1rem; border: 1px solid #ddd;"><a href="https://newstate.pubg.com/" target="_blank" rel="noopener noreferrer">newstate.pubg.com</a></td>
+    </tr>
+    <tr>
+      <td style="padding: 0.75rem 1rem; border: 1px solid #ddd;">Honkai: Star Rail</td>
+      <td style="padding: 0.75rem 1rem; border: 1px solid #ddd;">RPG gacha de estratégia da miHoYo com gráficos impressionantes.</td>
+      <td style="padding: 0.75rem 1rem; border: 1px solid #ddd;"><a href="https://honkai-star-rail.mihoyo.com/" target="_blank" rel="noopener noreferrer">honkai-star-rail.mihoyo.com</a></td>
+    </tr>
+    <tr>
+      <td style="padding: 0.75rem 1rem; border: 1px solid #ddd;">League of Legends: Wild Rift</td>
+      <td style="padding: 0.75rem 1rem; border: 1px solid #ddd;">MOBA mobile com novas temporadas e campeões constantes.</td>
+      <td style="padding: 0.75rem 1rem; border: 1px solid #ddd;"><a href="https://wildrift.leagueoflegends.com/" target="_blank" rel="noopener noreferrer">wildrift.leagueoflegends.com</a></td>
+    </tr>
+    <tr>
+      <td style="padding: 0.75rem 1rem; border: 1px solid #ddd;">Pokémon Sleep</td>
+      <td style="padding: 0.75rem 1rem; border: 1px solid #ddd;">Jogo inovador que monitora o sono e integra com o universo Pokémon.</td>
+      <td style="padding: 0.75rem 1rem; border: 1px solid #ddd;"><a href="https://pokemon-sleep.com/" target="_blank" rel="noopener noreferrer">pokemon-sleep.com</a></td>
+    </tr>
+    <tr>
+      <td style="padding: 0.75rem 1rem; border: 1px solid #ddd;">Marvel Snap</td>
+      <td style="padding: 0.75rem 1rem; border: 1px solid #ddd;">Card game rápido e competitivo, popular em dispositivos móveis.</td>
+      <td style="padding: 0.75rem 1rem; border: 1px solid #ddd;"><a href="https://marvelsnap.com/" target="_blank" rel="noopener noreferrer">marvelsnap.com</a></td>
+    </tr>
+  </tbody>
+</table>
+
+</body>
+</html>
