@@ -47,14 +47,14 @@
       font-size: 0.9rem;
       line-height: 1.4;
     }
-    
+
     #iframe-wrapper {
       position: fixed;
       bottom: 0;
       right: 0;
       width: 100%;
       max-width: 400px;
-      height: 50vh; /* Altura relativa no desktop */
+      height: 50vh;
       max-height: 400px;
       z-index: 9999;
       border-radius: 10px 0 0 0;
@@ -89,7 +89,7 @@
       line-height: 32px;
       text-align: center;
       z-index: 10000;
-      display: none; /* Escondido inicialmente */
+      display: none;
       transition: background-color 0.3s ease;
     }
 
@@ -101,7 +101,7 @@
     @media (max-width: 600px) {
       #iframe-wrapper {
         max-width: 100%;
-        height: 400px; /* Altura fixa menor */
+        height: 400px;
         border-radius: 0;
         left: 0;
         right: 0;
@@ -120,6 +120,70 @@
         font-size: 18px;
         line-height: 28px;
       }
+    }
+
+    /* Estilo para propaganda piscante */
+    #propaganda {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: #004080;
+      color: white;
+      padding: 20px 40px;
+      border-radius: 10px;
+      font-size: 1.5rem;
+      font-weight: bold;
+      z-index: 100000;
+      cursor: pointer;
+      user-select: none;
+      box-shadow: 0 0 15px 5px rgba(0, 64, 128, 0.7);
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    #propaganda-close {
+      background: #ff0000;
+      border: none;
+      color: white;
+      font-weight: bold;
+      font-size: 1.2rem;
+      border-radius: 50%;
+      width: 32px;
+      height: 32px;
+      cursor: pointer;
+      line-height: 30px;
+      text-align: center;
+    }
+
+    #propaganda-close:hover {
+      background: #cc0000;
+    }
+
+    /* Estilo da div de conteúdo único */
+    #conteudo-unico {
+      background-color: #eee;
+      border: 2px dashed #004080;
+      padding: 15px;
+      margin-top: 20px;
+      font-family: 'Courier New', Courier, monospace;
+      white-space: pre-wrap;
+      word-wrap: break-word;
+      font-size: 0.9rem;
+      max-height: 200px;
+      overflow-y: auto;
+    }
+
+    /* Estilo da seção de notícias */
+    #news-section {
+      margin-top: 40px;
+      border-top: 2px solid #004080;
+      padding-top: 20px;
+    }
+
+    #news-container article h3 {
+      margin-bottom: 0.3rem;
     }
   </style>
 </head>
@@ -333,8 +397,7 @@ def gameLoop():
 
     pygame.quit()
     quit()
-
-gameLoop()`}
+`}
       </code>
     </section>
 
@@ -347,196 +410,173 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
 
-public class SnakeGame : Form
+namespace SnakeGame
 {
-    private List<Point> snake = new List<Point>();
-    private Point food;
-    private int direction = 0; // 0=right,1=down,2=left,3=up
-    private Timer timer = new Timer();
-    private int gridSize = 20;
-    private int score = 0;
-
-    public SnakeGame()
+    public partial class Form1 : Form
     {
-        this.Width = 420;
-        this.Height = 440;
-        this.Text = "Snake Game";
-        this.DoubleBuffered = true;
-        snake.Add(new Point(5, 5));
-        GenerateFood();
-        timer.Interval = 100;
-        timer.Tick += Update;
-        timer.Start();
-        this.KeyDown += OnKeyDown;
-        this.Paint += OnPaint;
-    }
+        private List<Point> snake = new List<Point>();
+        private Point food;
+        private int direction = 0; // 0=up,1=right,2=down,3=left
+        private int score = 0;
+        private Timer timer = new Timer();
 
-    private void GenerateFood()
-    {
-        Random rnd = new Random();
-        food = new Point(rnd.Next(0, 20), rnd.Next(0, 20));
-    }
-
-    private void Update(object sender, EventArgs e)
-    {
-        Point head = snake[0];
-        Point newHead = head;
-
-        switch (direction)
+        public Form1()
         {
-            case 0: newHead = new Point(head.X + 1, head.Y); break;
-            case 1: newHead = new Point(head.X, head.Y + 1); break;
-            case 2: newHead = new Point(head.X - 1, head.Y); break;
-            case 3: newHead = new Point(head.X, head.Y - 1); break;
+            InitializeComponent();
+            StartGame();
+            timer.Interval = 100;
+            timer.Tick += Timer_Tick;
+            timer.Start();
+            this.KeyDown += Form1_KeyDown;
         }
 
-        // Checa colisões com paredes
-        if (newHead.X < 0 || newHead.X >= 20 || newHead.Y < 0 || newHead.Y >= 20)
+        private void StartGame()
         {
-            timer.Stop();
-            MessageBox.Show("Game Over! Score: " + score);
-            this.Close();
-        }
-
-        // Checa colisão com o próprio corpo
-        if (snake.Contains(newHead))
-        {
-            timer.Stop();
-            MessageBox.Show("Game Over! Score: " + score);
-            this.Close();
-        }
-
-        snake.Insert(0, newHead);
-
-        if (newHead == food)
-        {
-            score++;
+            snake.Clear();
+            snake.Add(new Point(10, 10));
             GenerateFood();
+            score = 0;
         }
-        else
+
+        private void GenerateFood()
         {
-            snake.RemoveAt(snake.Count - 1);
+            Random rnd = new Random();
+            food = new Point(rnd.Next(0, 20), rnd.Next(0, 20));
         }
 
-        Invalidate();
-    }
-
-    private void OnPaint(object sender, PaintEventArgs e)
-    {
-        Graphics g = e.Graphics;
-        g.Clear(Color.Black);
-
-        // Desenha cobra
-        foreach (Point p in snake)
+        private void Timer_Tick(object sender, EventArgs e)
         {
-            g.FillRectangle(Brushes.Green, p.X * gridSize, p.Y * gridSize, gridSize, gridSize);
+            MoveSnake();
+            this.Invalidate();
         }
 
-        // Desenha comida
-        g.FillRectangle(Brushes.Red, food.X * gridSize, food.Y * gridSize, gridSize, gridSize);
-    }
-
-    private void OnKeyDown(object sender, KeyEventArgs e)
-    {
-        switch(e.KeyCode)
+        private void MoveSnake()
         {
-            case Keys.Left:
-                if (direction != 0) direction = 2;
-                break;
-            case Keys.Right:
-                if (direction != 2) direction = 0;
-                break;
-            case Keys.Up:
-                if (direction != 1) direction = 3;
-                break;
-            case Keys.Down:
-                if (direction != 3) direction = 1;
-                break;
+            Point head = snake[0];
+            Point newHead = head;
+
+            switch (direction)
+            {
+                case 0: newHead = new Point(head.X, head.Y - 1); break;
+                case 1: newHead = new Point(head.X + 1, head.Y); break;
+                case 2: newHead = new Point(head.X, head.Y + 1); break;
+                case 3: newHead = new Point(head.X - 1, head.Y); break;
+            }
+
+            if (newHead.X < 0 || newHead.X >= 20 || newHead.Y < 0 || newHead.Y >= 20 || snake.Contains(newHead))
+            {
+                timer.Stop();
+                MessageBox.Show("Fim de jogo! Sua pontuação: " + score);
+                StartGame();
+                timer.Start();
+                return;
+            }
+
+            snake.Insert(0, newHead);
+
+            if (newHead == food)
+            {
+                score++;
+                GenerateFood();
+            }
+            else
+            {
+                snake.RemoveAt(snake.Count - 1);
+            }
+        }
+
+        protected override void OnPaint(PaintEventArgs e)
+        {
+            base.OnPaint(e);
+            Graphics g = e.Graphics;
+            foreach (Point p in snake)
+            {
+                g.FillRectangle(Brushes.Green, new Rectangle(p.X * 20, p.Y * 20, 20, 20));
+            }
+            g.FillRectangle(Brushes.Red, new Rectangle(food.X * 20, food.Y * 20, 20, 20));
+        }
+
+        private void Form1_KeyDown(object sender, KeyEventArgs e)
+        {
+            switch (e.KeyCode)
+            {
+                case Keys.Up:
+                    if (direction != 2) direction = 0;
+                    break;
+                case Keys.Right:
+                    if (direction != 3) direction = 1;
+                    break;
+                case Keys.Down:
+                    if (direction != 0) direction = 2;
+                    break;
+                case Keys.Left:
+                    if (direction != 1) direction = 3;
+                    break;
+            }
         }
     }
-
-    [STAThread]
-    static void Main()
-    {
-        Application.EnableVisualStyles();
-        Application.Run(new SnakeGame());
-    }
-}`}
+}
+`}
       </code>
     </section>
 
+    <!-- Div com conteúdo único e complexo -->
+    <section aria-labelledby="unique-content-title">
+      <h2 id="unique-content-title">Conteúdo Único e Complexo</h2>
+      <div id="conteudo-unico" tabindex="0" aria-label="Conteúdo único e complexo com letras, números e caracteres especiais">
+        &lt;Exemplo&gt; Código! 1234567890 abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ !@#$%^&*()_+-=[]{}|;:'",.<>/?`~<br />
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.<br />
+        Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.<br />
+        0123456789abcdefABCDEF!@#%^&*()_+[]{}|;:,.<>?/`~<br />
+        ~!@#$%^&*()_+{}|:"<>?`1234567890-=abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ<br />
+        End of complex content example with mixed characters and long text to test scrolling and display.
+      </div>
+    </section>
+
+    <!-- Seção de notícias gerada por JS -->
+    <section id="news-section" aria-label="Seção de notícias">
+      <h2>Últimas Notícias</h2>
+      <div id="news-container" aria-live="polite" aria-atomic="true">
+        <!-- Notícias vão aparecer aqui -->
+      </div>
+    </section>
   </main>
-  <table style="width:100%; border-collapse: collapse; font-family: Arial, sans-serif;">
-  <caption style="caption-side: top; font-weight: bold; font-size: 1.5rem; margin-bottom: 0.5rem; color: #007bff; text-align: left;">
-    Principais Jogos Mobile em Alta para 2025
-  </caption>
-  <thead>
-    <tr style="background-color: #007bff; color: white;">
-      <th style="padding: 0.75rem 1rem; border: 1px solid #ddd; text-align: left;">Jogo</th>
-      <th style="padding: 0.75rem 1rem; border: 1px solid #ddd; text-align: left;">Descrição</th>
-      <th style="padding: 0.75rem 1rem; border: 1px solid #ddd; text-align: left;">Referência</th>
-    </tr>
-  </thead>
-  <div id="iframe-wrapper" role="region" aria-label="Anúncio fixo">
-  <button id="close-btn" aria-label="Fechar anúncio">×</button>
-  <iframe
-    id="iframe-fixo"
-    src="https://remarkable-gelato-4db597.netlify.app/modeloanuncio.html"
-    title="Anúncio Fixo Responsivo"
-    loading="lazy"
-    ></iframe>
-</div>
 
-<script>
-  // Espera 10 segundos para exibir o botão de fechar
-  setTimeout(() => {
-    document.getElementById("close-btn").style.display = "block";
-  }, 10000);
+  <script>
+    // Array de notícias
+    const noticias = [
+      {
+        titulo: "Novo recorde no jogo da cobrinha!",
+        texto: "Um jogador brasileiro bateu o recorde mundial no clássico jogo da cobrinha, alcançando 1000 pontos consecutivos sem morrer."
+      },
+      {
+        titulo: "Versão web do Snake agora com multiplayer",
+        texto: "Desenvolvedores lançaram uma versão multiplayer online do Snake, permitindo competições em tempo real."
+      },
+      {
+        titulo: "O jogo da cobrinha inspira novos jogos educativos",
+        texto: "Educadores utilizam a mecânica simples do Snake para ensinar lógica de programação e algoritmos em escolas."
+      }
+    ];
 
-  // Ação do botão para fechar o iframe
-  document.getElementById("close-btn").addEventListener("click", () => {
-    document.getElementById("iframe-wrapper").style.display = "none";
-  });
-</script>
+    const container = document.getElementById("news-container");
 
-  <tbody>
-    <tr>
-      <td style="padding: 0.75rem 1rem; border: 1px solid #ddd;">Diablo Immortal</td>
-      <td style="padding: 0.75rem 1rem; border: 1px solid #ddd;">RPG de ação da Blizzard com novas expansões e conteúdo atualizado para 2025.</td>
-      <td style="padding: 0.75rem 1rem; border: 1px solid #ddd;"><a href="https://diabloimmortal.com/" target="_blank" rel="noopener noreferrer">diabloimmortal.com</a></td>
-    </tr>
-    <tr>
-      <td style="padding: 0.75rem 1rem; border: 1px solid #ddd;">Call of Duty: Warzone Mobile</td>
-      <td style="padding: 0.75rem 1rem; border: 1px solid #ddd;">FPS Battle Royale otimizado para celular com gráficos de alta qualidade.</td>
-      <td style="padding: 0.75rem 1rem; border: 1px solid #ddd;"><a href="https://www.callofduty.com/mobile" target="_blank" rel="noopener noreferrer">callofduty.com/mobile</a></td>
-    </tr>
-    <tr>
-      <td style="padding: 0.75rem 1rem; border: 1px solid #ddd;">PUBG: New State</td>
-      <td style="padding: 0.75rem 1rem; border: 1px solid #ddd;">Evolução futurista do PUBG com mapas e mecânicas novas para mobile.</td>
-      <td style="padding: 0.75rem 1rem; border: 1px solid #ddd;"><a href="https://newstate.pubg.com/" target="_blank" rel="noopener noreferrer">newstate.pubg.com</a></td>
-    </tr>
-    <tr>
-      <td style="padding: 0.75rem 1rem; border: 1px solid #ddd;">Honkai: Star Rail</td>
-      <td style="padding: 0.75rem 1rem; border: 1px solid #ddd;">RPG gacha de estratégia da miHoYo com gráficos impressionantes.</td>
-      <td style="padding: 0.75rem 1rem; border: 1px solid #ddd;"><a href="https://honkai-star-rail.mihoyo.com/" target="_blank" rel="noopener noreferrer">honkai-star-rail.mihoyo.com</a></td>
-    </tr>
-    <tr>
-      <td style="padding: 0.75rem 1rem; border: 1px solid #ddd;">League of Legends: Wild Rift</td>
-      <td style="padding: 0.75rem 1rem; border: 1px solid #ddd;">MOBA mobile com novas temporadas e campeões constantes.</td>
-      <td style="padding: 0.75rem 1rem; border: 1px solid #ddd;"><a href="https://wildrift.leagueoflegends.com/" target="_blank" rel="noopener noreferrer">wildrift.leagueoflegends.com</a></td>
-    </tr>
-    <tr>
-      <td style="padding: 0.75rem 1rem; border: 1px solid #ddd;">Pokémon Sleep</td>
-      <td style="padding: 0.75rem 1rem; border: 1px solid #ddd;">Jogo inovador que monitora o sono e integra com o universo Pokémon.</td>
-      <td style="padding: 0.75rem 1rem; border: 1px solid #ddd;"><a href="https://pokemon-sleep.com/" target="_blank" rel="noopener noreferrer">pokemon-sleep.com</a></td>
-    </tr>
-    <tr>
-      <td style="padding: 0.75rem 1rem; border: 1px solid #ddd;">Marvel Snap</td>
-      <td style="padding: 0.75rem 1rem; border: 1px solid #ddd;">Card game rápido e competitivo, popular em dispositivos móveis.</td>
-      <td style="padding: 0.75rem 1rem; border: 1px solid #ddd;"><a href="https://marvelsnap.com/" target="_blank" rel="noopener noreferrer">marvelsnap.com</a></td>
-    </tr>
-  </tbody>
-</table>
+    // Função para criar as notícias no container
+    function criarNoticias() {
+      noticias.forEach(noticia => {
+        const article = document.createElement('article');
+        const h3 = document.createElement('h3');
+        h3.textContent = noticia.titulo;
+        const p = document.createElement('p');
+        p.textContent = noticia.texto;
+        article.appendChild(h3);
+        article.appendChild(p);
+        container.appendChild(article);
+      });
+    }
 
+    // Chama a função para renderizar notícias
+    criarNoticias();
+  </script>
 </body>
 </html>
