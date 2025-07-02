@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Assista a vídeos evangélicos inspiradores que edificam sua fé e fortalecem sua caminhada com Deus.">
+  <meta name="keywords" content="vídeo evangélico, louvor, adoração, fé, cristão, Jesus, Deus, igreja, evangelho">
+  <meta name="author" content="Seu Nome ou Ministério">
+  <title>Vídeos Evangélicos Inspiradores | Louvor e Adoração</title>
+  <link rel="canonical" href="https://www.seusite.com/videos-evangelicos">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f9f9f9;
+      color: #333;
+    }
+
+    header, footer {
+      background-color: #1e3a5f;
+      color: white;
+      text-align: center;
+      padding: 20px 10px;
+    }
+
+    main {
+      max-width: 800px;
+      margin: 40px auto;
+      padding: 0 20px;
+    }
+
+    h1 {
+      font-size: 2em;
+      text-align: center;
+      color: #1e3a5f;
+      margin-bottom: 10px;
+    }
+
+    /* Estilo para o código único */
+    #codigoUnico {
+      text-align: center;
+      font-weight: bold;
+      font-size: 1.2em;
+      margin-top: 10px;
+      color: #f04e23;
+      user-select: all; /* para facilitar copiar */
+    }
+
+    p.intro {
+      font-size: 1.1em;
+      line-height: 1.6;
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    ul.video-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    ul.video-list li {
+      margin-bottom: 50px;
+    }
+
+    iframe {
+      display: block;
+      margin: 0 auto;
+      max-width: 100%;
+      width: 100%;
+      height: 450px;
+      border: none;
+      border-radius: 10px;
+    }
+
+    .update-date {
+      margin-top: 10px;
+      font-size: 0.9em;
+      color: #ddd;
+    }
+
+    /* iframe fixo e botão fechar */
+    #iframe-wrapper {
+      position: fixed;
+      bottom: 0;
+      right: 0;
+      width: 100%;
+      max-width: 400px;
+      height: 50vh;
+      max-height: 400px;
+      z-index: 9999;
+      border-radius: 10px 0 0 0;
+      box-shadow: -2px -2px 12px rgba(0,0,0,0.3);
+      background-color: #fff;
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    #iframe-fixo {
+      width: 100%;
+      height: 100%;
+      border: none;
+      border-radius: 10px 0 0 0;
+      display: block;
+    }
+
+    #close-btn {
+      position: absolute;
+      top: 8px;
+      right: 12px;
+      background: rgba(0, 0, 0, 0.7);
+      color: #fff;
+      border: none;
+      border-radius: 50%;
+      font-size: 20px;
+      width: 32px;
+      height: 32px;
+      cursor: pointer;
+      line-height: 32px;
+      text-align: center;
+      z-index: 10000;
+      display: none;
+      transition: background-color 0.3s ease;
+    }
+
+    #close-btn:hover {
+      background: rgba(255, 0, 0, 0.8);
+    }
+
+    /* Propaganda piscante */
+    #propaganda {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: #f04e23;
+      color: white;
+      padding: 20px 30px;
+      font-size: 1.3em;
+      font-weight: bold;
+      border-radius: 12px;
+      box-shadow: 0 0 20px #f04e23;
+      cursor: pointer;
+      z-index: 100000;
+      animation: piscar 1.5s infinite alternate;
+      text-align: center;
+      max-width: 90vw;
+      word-wrap: break-word;
+      user-select: none;
+    }
+
+    #propaganda a {
+      color: #fff;
+      text-decoration: underline;
+      font-weight: bold;
+    }
+
+    #propaganda:hover {
+      animation-play-state: paused;
+      box-shadow: 0 0 30px 5px #ff5722;
+    }
+
+    @keyframes piscar {
+      0% { opacity: 1; }
+      50% { opacity: 0.3; }
+      100% { opacity: 1; }
+    }
+
+    @media (max-width: 600px) {
+      #iframe-wrapper {
+        max-width: 100%;
+        height: 400px;
+        border-radius: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+      }
+
+      #iframe-fixo {
+        border-radius: 0;
+      }
+
+      #close-btn {
+        top: 6px;
+        right: 8px;
+        width: 28px;
+        height: 28px;
+        font-size: 18px;
+        line-height: 28px;
+      }
+
+      #propaganda {
+        font-size: 1em;
+        padding: 15px 20px;
+        max-width: 95vw;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Louvor e Adoração a Deus</h1>
+    <!-- Aqui você define a quantidade de caracteres alterando data-length -->
+    <p id="codigoUnico" data-length="16" aria-live="polite" aria-label="Código único gerado"></p>
+  </header>
+
+  <a href="https://jogosantigos472302513.wordpress.com/maquinas-vps-temos-todas-as-opcoes-de-maqinas-para-voce/" style="text-decoration: none;">
+    <button style="padding: 10px 20px; background-color: #f04e23; color: white; border: none; border-radius: 5px; cursor: pointer;">
+      vps as melhores máquinas
+    </button>
+  </a>
+
+  <br><br>
+
+  <a href="https://geocredibnkvitoria.com/" style="text-decoration: none;">
+    <button style="padding: 10px 20px; background-color: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer;">
+      CRÉDITO PESSOAL
+    </button>
+  </a>
+
+  <main>
+    <a href="#data">DATA DA Atualização</a>
+    <p class="intro">Assista aos vídeos abaixo e permita que o Espírito Santo fale ao seu coração através desses louvores abençoados.</p>
+
+    <ul class="video-list">
+      <li>
+        <iframe
+          src="https://www.youtube.com/embed/h9wIoIBhhB8"
+          title="Louvor evangélico - Adoração a Deus 2"
+          allowfullscreen
+          loading="lazy">
+        </iframe>
+        <p style="text-align:center; margin-top:8px;">Louvor evangélico inspirador 2</p>
+      </li>
+      <li>
+        <iframe
+          src="https://www.youtube.com/embed/qn5NO8FgO08"
+          title="Louvor evangélico - Adoração a Deus 2"
+          allowfullscreen
+          loading="lazy">
+        </iframe>
+        <p style="text-align:center; margin-top:8px;">Louvor evangélico inspirador 2</p>
+      </li>
+      <li>
+        <iframe
+          src="https://www.youtube.com/embed/4vaeWLd11m4?si=fR5iyXnHN3bCfGNz"
+          title="Louvor evangélico - Adoração a Deus 1"
+          allowfullscreen
+          loading="lazy">
+        </iframe>
+        <p style="text-align:center; margin-top:8px;">Louvor evangélico inspirador 1</p>
+      </li>
+      <li>
+        <iframe
+          src="https://www.youtube.com/embed/f6np5yPe7c4?si=ykmOjuYe0Zj--nUB"
+          title="Louvor evangélico - Adoração a Deus 2"
+          allowfullscreen
+          loading="lazy">
+        </iframe>
+        <p style="text-align:center; margin-top:8px;">Louvor evangélico inspirador 2</p>
+      </li>
+      <li>
+        <iframe
+          src="https://www.youtube.com/embed/aNSDbpkWyG0?si=pv-8jk-uzru2QUst"
+          title="Louvor evangélico - Adoração a Deus 2"
+          allowfullscreen
+          loading="lazy">
+        </iframe>
+        <p style="text-align:center; margin-top:8px;">Louvor evangélico inspirador 2</p>
+      </li>
+      <li>
+        <iframe
+          src="https://www.youtube.com/embed/jfUUhoVBSSk?si=1ngyDdMz6WlEqljS"
+          title="Louvor evangélico - Adoração a Deus 3"
+          allowfullscreen
+          loading="lazy">
+        </iframe>
+        <p style="text-align:center; margin-top:8px;">Louvor evangélico inspirador 3</p>
+      </li>
+    </ul>
+  </main>
+
+  <footer>
+    <p>&copy; Ministério de Louvor e Fé | Todos os direitos reservados</p>
+    <div id="data">
+      <p class="update-date" id="lastUpdate"></p>
+    </div>
+  </footer>
+
+  <!-- Propaganda piscante no centro -->
+  <div id="propaganda" role="alert" aria-live="assertive" tabindex="0">
+    <!-- O conteúdo será preenchido via JS -->
+  </div>
+
+  <script>
+    // Formata data para pt-BR
+    function formatDateBR(date) {
+      const options = { day: '2-digit', month: '2-digit', year: 'numeric' };
+      return date.toLocaleDateString('pt-BR', options);
+    }
+
+    // Atualiza data no rodapé
+    const lastUpdateElem = document.getElementById('lastUpdate');
+    const now = new Date();
+    lastUpdateElem.textContent = 'Última atualização: ' + formatDateBR(now);
+
+    // Função que gera texto aleatório (letras, números e especiais)
+    function gerarTextoAleatorio(tamanho) {
+      const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+{}[]<>?~';
+      let resultado = '';
+      for (let i = 0; i < tamanho; i++) {
+        resultado += chars.charAt(Math.floor(Math.random() * chars.length));
+      }
+      return resultado;
+    }
+
+    // Gera e insere o código único lendo data-length direto da tag
+    document.addEventListener('DOMContentLoaded', () => {
+      const elemento = document.getElementById('codigoUnico');
+      if (!elemento) return;
+
+      let tamanho = parseInt(elemento.getAttribute('data-length'), 10);
+      if (isNaN(tamanho) || tamanho < 1) tamanho = 500; // valor padrão
+      if (tamanho > 64) tamanho = 64; // limite máximo para evitar muito grande
+
+      elemento.textContent = gerarTextoAleatorio(tamanho);
+    });
+
+    // Propaganda piscante: textos e links randomizados
+    const propagandas = [
+      { url: "https://jogosantigos472302513.wordpress.com/maquinas-vps-temos-todas-as-opcoes-de-maqinas-para-voce/", texto: "🔧 Infraestrutura de qualidade para seu site!" },
+      { url: "https://hostinger.com.br?REFERRALCODE=SSNVICTORXU8", texto: "💻 Hospedagem com desconto!" },
+      { url: "https://geocredibnkvitoria.com/", texto: "💸 Crédito rápido e fácil" },
+      { url: "https://wa.me/5527998950540", texto: "📃 Laudo bancário em minutos" },
+      { url: "https://www.youtube.com/@gamenologia", texto: "🎮 Gamenologia: Fique por dentro!" },
+      { url: "https://wa.me/5527999497001", texto: "SEGURO DE CARRO DDD (27)99949-7001 CONSÓRCIO ENTRE OUTROS" },
+      { url: "https://wa.me/5527999497001", texto: "ALUGAMOS UM COBERTURA TEMPORADA EM GUARAPARI ES SAIBA +" },
+    
+
+    ];
+
+    function gerarPropaganda() {
+      const index = Math.floor(Math.random() * propagandas.length);
+      return propagandas[index];
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const divPropaganda = document.getElementById('propaganda');
+      const { texto, url } = gerarPropaganda();
+      // Inserir link dentro da div
+      divPropaganda.innerHTML = `<a href="${url}" target="_blank" rel="noopener noreferrer">${texto}</a>`;
+      // Permitir foco e clique
+      divPropaganda.addEventListener('click', () => {
+        window.open(url, '_blank', 'noopener,noreferrer');
+      });
+      // Também fechar propaganda ao apertar ESC
+      divPropaganda.addEventListener('keydown', (e) => {
+        if (e.key === "Escape" || e.key === "Esc") {
+          divPropaganda.style.display = 'none';
+        }
+      });
+    });
+  </script>
+
+</body>
+</html>
