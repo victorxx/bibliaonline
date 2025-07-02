@@ -1,1 +1,583 @@
 
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="História e códigos do jogo da cobrinha (Snake) em JavaScript, Python e C# para aprendizado." />
+  <meta name="keywords" content="Jogo da cobrinha, Snake, código JavaScript, código Python, código C#, programação, tutorial" />
+  <title>História e Código do Jogo da Cobrinha | Snake Game</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f9f9f9;
+      color: #222;
+      margin: 20px;
+      line-height: 1.5;
+    }
+    header {
+      max-width: 900px;
+      margin: 0 auto 20px;
+      text-align: center;
+    }
+    main {
+      max-width: 900px;
+      margin: 0 auto;
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 8px rgba(0,0,0,0.1);
+    }
+    h1, h2 {
+      color: #004080;
+    }
+    p {
+      margin-bottom: 1rem;
+      font-size: 1.1rem;
+    }
+    code {
+      display: block;
+      white-space: pre;
+      background-color: #272822;
+      color: #f8f8f2;
+      padding: 1em;
+      border-radius: 5px;
+      overflow-x: auto;
+      margin-bottom: 2rem;
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 0.9rem;
+      line-height: 1.4;
+    }
+
+    #iframe-wrapper {
+      position: fixed;
+      bottom: 0;
+      right: 0;
+      width: 100%;
+      max-width: 400px;
+      height: 50vh;
+      max-height: 400px;
+      z-index: 9999;
+      border-radius: 10px 0 0 0;
+      box-shadow: -2px -2px 12px rgba(0,0,0,0.3);
+      background-color: #fff;
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    #iframe-fixo {
+      width: 100%;
+      height: 100%;
+      border: none;
+      border-radius: 10px 0 0 0;
+      display: block;
+    }
+
+    #close-btn {
+      position: absolute;
+      top: 8px;
+      right: 12px;
+      background: rgba(0, 0, 0, 0.7);
+      color: #fff;
+      border: none;
+      border-radius: 50%;
+      font-size: 20px;
+      width: 32px;
+      height: 32px;
+      cursor: pointer;
+      line-height: 32px;
+      text-align: center;
+      z-index: 10000;
+      display: none;
+      transition: background-color 0.3s ease;
+    }
+
+    #close-btn:hover {
+      background: rgba(255, 0, 0, 0.8);
+    }
+
+    /* MOBILE */
+    @media (max-width: 600px) {
+      #iframe-wrapper {
+        max-width: 100%;
+        height: 400px;
+        border-radius: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+      }
+
+      #iframe-fixo {
+        border-radius: 0;
+      }
+
+      #close-btn {
+        top: 6px;
+        right: 8px;
+        width: 28px;
+        height: 28px;
+        font-size: 18px;
+        line-height: 28px;
+      }
+    }
+
+    /* Estilo para propaganda piscante */
+    #propaganda {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: #004080;
+      color: white;
+      padding: 20px 40px;
+      border-radius: 10px;
+      font-size: 1.5rem;
+      font-weight: bold;
+      z-index: 100000;
+      cursor: pointer;
+      user-select: none;
+      box-shadow: 0 0 15px 5px rgba(0, 64, 128, 0.7);
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    #propaganda-close {
+      background: #ff0000;
+      border: none;
+      color: white;
+      font-weight: bold;
+      font-size: 1.2rem;
+      border-radius: 50%;
+      width: 32px;
+      height: 32px;
+      cursor: pointer;
+      line-height: 30px;
+      text-align: center;
+    }
+
+    #propaganda-close:hover {
+      background: #cc0000;
+    }
+
+    /* Estilo da div de conteúdo único */
+    #conteudo-unico {
+      background-color: #eee;
+      border: 2px dashed #004080;
+      padding: 15px;
+      margin-top: 20px;
+      font-family: 'Courier New', Courier, monospace;
+      white-space: pre-wrap;
+      word-wrap: break-word;
+      font-size: 0.9rem;
+      max-height: 200px;
+      overflow-y: auto;
+    }
+
+    /* Estilo da seção de notícias */
+    #news-section {
+      margin-top: 40px;
+      border-top: 2px solid #004080;
+      padding-top: 20px;
+    }
+
+    #news-container article h3 {
+      margin-bottom: 0.3rem;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>História e Código do Jogo da Cobrinha (Snake)</h1>
+  </header>
+
+  <main>
+    <section aria-labelledby="history-title">
+      <h2 id="history-title">História do Jogo da Cobrinha</h2>
+      <p>
+        O jogo da cobrinha, conhecido internacionalmente como "Snake", é um dos jogos eletrônicos mais clássicos e populares. 
+        Surgiu na década de 1970 em computadores e ganhou fama nos anos 1990 com sua implementação em celulares Nokia. 
+        O objetivo do jogo é controlar uma cobrinha que cresce ao comer objetos na tela, evitando colidir com as bordas ou com o próprio corpo. 
+        É um jogo simples, mas que exige raciocínio rápido e habilidade, sendo muito usado para aprendizado de programação.
+      </p>
+    </section>
+
+    <section aria-labelledby="js-code-title">
+      <h2 id="js-code-title">Código em JavaScript</h2>
+      <code>
+{`// Código simples do jogo da cobrinha em JavaScript (exibido como texto)
+const canvas = document.getElementById('game');
+const ctx = canvas.getContext('2d');
+const box = 32;
+
+let snake = [];
+snake[0] = { x: 9 * box, y: 10 * box };
+
+let food = {
+  x: Math.floor(Math.random()*17+1) * box,
+  y: Math.floor(Math.random()*15+3) * box
+};
+
+let score = 0;
+let d;
+
+document.addEventListener('keydown', direction);
+
+function direction(event){
+  if(event.keyCode == 37 && d != 'RIGHT'){
+    d = 'LEFT';
+  } else if(event.keyCode == 38 && d != 'DOWN'){
+    d = 'UP';
+  } else if(event.keyCode == 39 && d != 'LEFT'){
+    d = 'RIGHT';
+  } else if(event.keyCode == 40 && d != 'UP'){
+    d = 'DOWN';
+  }
+}
+
+function draw(){
+  ctx.fillStyle = 'lightgreen';
+  ctx.fillRect(0, 0, 608, 608);
+
+  for(let i = 0; i < snake.length; i++){
+    ctx.fillStyle = (i == 0) ? 'green' : 'darkgreen';
+    ctx.fillRect(snake[i].x, snake[i].y, box, box);
+  }
+
+  ctx.fillStyle = 'red';
+  ctx.fillRect(food.x, food.y, box, box);
+
+  let snakeX = snake[0].x;
+  let snakeY = snake[0].y;
+
+  if(d == 'LEFT') snakeX -= box;
+  if(d == 'UP') snakeY -= box;
+  if(d == 'RIGHT') snakeX += box;
+  if(d == 'DOWN') snakeY += box;
+
+  if(snakeX == food.x && snakeY == food.y){
+    score++;
+    food = {
+      x: Math.floor(Math.random()*17+1) * box,
+      y: Math.floor(Math.random()*15+3) * box
+    };
+  } else {
+    snake.pop();
+  }
+
+  let newHead = { x: snakeX, y: snakeY };
+
+  // Colisão com corpo
+  for(let i = 0; i < snake.length; i++){
+    if(snake[i].x == newHead.x && snake[i].y == newHead.y){
+      clearInterval(game);
+      alert('Fim de jogo! Seu placar: ' + score);
+    }
+  }
+
+  // Colisão com bordas
+  if(snakeX < 0 || snakeX >= 608 || snakeY < 0 || snakeY >= 608){
+    clearInterval(game);
+    alert('Fim de jogo! Seu placar: ' + score);
+  }
+
+  snake.unshift(newHead);
+
+  ctx.fillStyle = 'white';
+  ctx.font = '45px Changa one';
+  ctx.fillText(score, 2*box, 1.6*box);
+}
+
+let game = setInterval(draw, 100);`}
+      </code>
+    </section>
+
+    <section aria-labelledby="python-code-title">
+      <h2 id="python-code-title">Código em Python</h2>
+      <code>
+{`# Código simples do jogo da cobrinha em Python usando pygame (exibido como texto)
+import pygame
+import random
+
+pygame.init()
+
+screen = pygame.display.set_mode((600, 600))
+pygame.display.set_caption('Snake Game')
+
+clock = pygame.time.Clock()
+font = pygame.font.SysFont('Arial', 35)
+
+snake_block = 20
+snake_speed = 15
+
+def our_snake(snake_block, snake_list):
+    for x in snake_list:
+        pygame.draw.rect(screen, (0,255,0), [x[0], x[1], snake_block, snake_block])
+
+def message(msg, color):
+    mesg = font.render(msg, True, color)
+    screen.blit(mesg, [100, 250])
+
+def gameLoop():
+    game_over = False
+    game_close = False
+
+    x1 = 300
+    y1 = 300
+
+    x1_change = 0
+    y1_change = 0
+
+    snake_List = []
+    Length_of_snake = 1
+
+    foodx = round(random.randrange(0, 600 - snake_block) / 20.0) * 20.0
+    foody = round(random.randrange(0, 600 - snake_block) / 20.0) * 20.0
+
+    while not game_over:
+
+        while game_close == True:
+            screen.fill((0,0,0))
+            message("Você perdeu! Pressione C para jogar novamente ou Q para sair", (255,0,0))
+            pygame.display.update()
+
+            for event in pygame.event.get():
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_q:
+                        game_over = True
+                        game_close = False
+                    if event.key == pygame.K_c:
+                        gameLoop()
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                game_over = True
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_LEFT:
+                    x1_change = -snake_block
+                    y1_change = 0
+                elif event.key == pygame.K_RIGHT:
+                    x1_change = snake_block
+                    y1_change = 0
+                elif event.key == pygame.K_UP:
+                    y1_change = -snake_block
+                    x1_change = 0
+                elif event.key == pygame.K_DOWN:
+                    y1_change = snake_block
+                    x1_change = 0
+
+        if x1 >= 600 or x1 < 0 or y1 >= 600 or y1 < 0:
+            game_close = True
+
+        x1 += x1_change
+        y1 += y1_change
+        screen.fill((0,0,0))
+        pygame.draw.rect(screen, (255,0,0), [foodx, foody, snake_block, snake_block])
+        snake_Head = []
+        snake_Head.append(x1)
+        snake_Head.append(y1)
+        snake_List.append(snake_Head)
+        if len(snake_List) > Length_of_snake:
+            del snake_List[0]
+
+        for x in snake_List[:-1]:
+            if x == snake_Head:
+                game_close = True
+
+        our_snake(snake_block, snake_List)
+        pygame.display.update()
+
+        if x1 == foodx and y1 == foody:
+            foodx = round(random.randrange(0, 600 - snake_block) / 20.0) * 20.0
+            foody = round(random.randrange(0, 600 - snake_block) / 20.0) * 20.0
+            Length_of_snake += 1
+
+        clock.tick(snake_speed)
+
+    pygame.quit()
+    quit()
+`}
+      </code>
+    </section>
+
+    <section aria-labelledby="csharp-code-title">
+      <h2 id="csharp-code-title">Código em C#</h2>
+      <code>
+{`// Código simples do jogo da cobrinha em C# usando Windows Forms (exibido como texto)
+using System;
+using System.Collections.Generic;
+using System.Drawing;
+using System.Windows.Forms;
+
+namespace SnakeGame
+{
+    public partial class Form1 : Form
+    {
+        private List<Point> snake = new List<Point>();
+        private Point food;
+        private int direction = 0; // 0=up,1=right,2=down,3=left
+        private int score = 0;
+        private Timer timer = new Timer();
+
+        public Form1()
+        {
+            InitializeComponent();
+            StartGame();
+            timer.Interval = 100;
+            timer.Tick += Timer_Tick;
+            timer.Start();
+            this.KeyDown += Form1_KeyDown;
+        }
+
+        private void StartGame()
+        {
+            snake.Clear();
+            snake.Add(new Point(10, 10));
+            GenerateFood();
+            score = 0;
+        }
+
+        private void GenerateFood()
+        {
+            Random rnd = new Random();
+            food = new Point(rnd.Next(0, 20), rnd.Next(0, 20));
+        }
+
+        private void Timer_Tick(object sender, EventArgs e)
+        {
+            MoveSnake();
+            this.Invalidate();
+        }
+
+        private void MoveSnake()
+        {
+            Point head = snake[0];
+            Point newHead = head;
+
+            switch (direction)
+            {
+                case 0: newHead = new Point(head.X, head.Y - 1); break;
+                case 1: newHead = new Point(head.X + 1, head.Y); break;
+                case 2: newHead = new Point(head.X, head.Y + 1); break;
+                case 3: newHead = new Point(head.X - 1, head.Y); break;
+            }
+
+            if (newHead.X < 0 || newHead.X >= 20 || newHead.Y < 0 || newHead.Y >= 20 || snake.Contains(newHead))
+            {
+                timer.Stop();
+                MessageBox.Show("Fim de jogo! Sua pontuação: " + score);
+                StartGame();
+                timer.Start();
+                return;
+            }
+
+            snake.Insert(0, newHead);
+
+            if (newHead == food)
+            {
+                score++;
+                GenerateFood();
+            }
+            else
+            {
+                snake.RemoveAt(snake.Count - 1);
+            }
+        }
+
+        protected override void OnPaint(PaintEventArgs e)
+        {
+            base.OnPaint(e);
+            Graphics g = e.Graphics;
+            foreach (Point p in snake)
+            {
+                g.FillRectangle(Brushes.Green, new Rectangle(p.X * 20, p.Y * 20, 20, 20));
+            }
+            g.FillRectangle(Brushes.Red, new Rectangle(food.X * 20, food.Y * 20, 20, 20));
+        }
+
+        private void Form1_KeyDown(object sender, KeyEventArgs e)
+        {
+            switch (e.KeyCode)
+            {
+                case Keys.Up:
+                    if (direction != 2) direction = 0;
+                    break;
+                case Keys.Right:
+                    if (direction != 3) direction = 1;
+                    break;
+                case Keys.Down:
+                    if (direction != 0) direction = 2;
+                    break;
+                case Keys.Left:
+                    if (direction != 1) direction = 3;
+                    break;
+            }
+        }
+    }
+}
+`}
+      </code>
+    </section>
+
+    <!-- Div com conteúdo único e complexo -->
+    <section aria-labelledby="unique-content-title">
+      <h2 id="unique-content-title">Conteúdo Único e Complexo</h2>
+      <div id="conteudo-unico" tabindex="0" aria-label="Conteúdo único e complexo com letras, números e caracteres especiais">
+        &lt;Exemplo&gt; Código! 1234567890 abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ !@#$%^&*()_+-=[]{}|;:'",.<>/?`~<br />
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.<br />
+        Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.<br />
+        0123456789abcdefABCDEF!@#%^&*()_+[]{}|;:,.<>?/`~<br />
+        ~!@#$%^&*()_+{}|:"<>?`1234567890-=abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ<br />
+        End of complex content example with mixed characters and long text to test scrolling and display.
+      </div>
+    </section>
+
+    <!-- Seção de notícias gerada por JS -->
+    <section id="news-section" aria-label="Seção de notícias">
+      <h2>Últimas Notícias</h2>
+      <div id="news-container" aria-live="polite" aria-atomic="true">
+        <!-- Notícias vão aparecer aqui -->
+      </div>
+    </section>
+  </main>
+
+  <script>
+    // Array de notícias
+    const noticias = [
+      {
+        titulo: "Novo recorde no jogo da cobrinha!",
+        texto: "Um jogador brasileiro bateu o recorde mundial no clássico jogo da cobrinha, alcançando 1000 pontos consecutivos sem morrer."
+      },
+      {
+        titulo: "Versão web do Snake agora com multiplayer",
+        texto: "Desenvolvedores lançaram uma versão multiplayer online do Snake, permitindo competições em tempo real."
+      },
+      {
+        titulo: "O jogo da cobrinha inspira novos jogos educativos",
+        texto: "Educadores utilizam a mecânica simples do Snake para ensinar lógica de programação e algoritmos em escolas."
+      }
+    ];
+
+    const container = document.getElementById("news-container");
+
+    // Função para criar as notícias no container
+    function criarNoticias() {
+      noticias.forEach(noticia => {
+        const article = document.createElement('article');
+        const h3 = document.createElement('h3');
+        h3.textContent = noticia.titulo;
+        const p = document.createElement('p');
+        p.textContent = noticia.texto;
+        article.appendChild(h3);
+        article.appendChild(p);
+        container.appendChild(article);
+      });
+    }
+
+    // Chama a função para renderizar notícias
+    criarNoticias();
+  </script>
+</body>
+</html>
