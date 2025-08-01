@@ -192,27 +192,55 @@
     document.getElementById("conteudo-unico").textContent = gerarConteudoUnico();
 
     // Versículos
-    const versiculos = [
-      {
-        referencia: "João 3:16",
-        texto: "Porque Deus amou o mundo de tal maneira que deu o seu Filho unigênito...",
-        explicacao: "Mostra o amor de Deus e o plano de salvação."
-      },
-      {
-        referencia: "Salmos 23:1",
-        texto: "O Senhor é o meu pastor; nada me faltará.",
-        explicacao: "Expressa confiança total em Deus como provedor."
-      },
-      {
-        referencia: "Filipenses 4:13",
-        texto: "Posso todas as coisas naquele que me fortalece.",
-        explicacao: "Fala da força que vem de Cristo."
-      },
-      {
-        referencia: "Provérbios 3:5",
-        texto: "Confia no Senhor de todo o teu coração...",
-        explicacao: "Confiança verdadeira é se apoiar totalmente em Deus."
-      }
+  {
+                        referencia: "João 3:16",
+                        texto: "Porque Deus amou o mundo de tal maneira que deu o seu Filho unigênito...",
+                        explicacao: "Mostra o amor de Deus e o plano de salvação."
+                      },
+                      {
+                        referencia: "Salmos 23:1",
+                        texto: "O Senhor é o meu pastor; nada me faltará.",
+                        explicacao: "Expressa confiança total em Deus como provedor."
+                      },
+                      {
+                        referencia: "Filipenses 4:13",
+                        texto: "Posso todas as coisas naquele que me fortalece.",
+                        explicacao: "Fala da força que vem de Cristo."
+                      },
+                      {
+                        referencia: "Provérbios 3:5",
+                        texto: "Confia no Senhor de todo o teu coração...",
+                        explicacao: "Confiança verdadeira é se apoiar totalmente em Deus."
+                      },
+                      {
+                  referencia: "Salmos 23:1",
+                  texto: "O Senhor é o meu pastor, nada me faltará.",
+                  explicacao: "Expressa confiança na provisão e cuidado de Deus."
+                
+                },
+                {
+                  referencia: "Filipenses 4:13",
+                  texto: "Posso todas as coisas naquele que me fortalece.",
+                  explicacao: "Encoraja a perseverança através da força que vem de Cristo."
+                
+                },
+                {
+                  referencia: "Romanos 8:28",
+                  texto: "Sabemos que todas as coisas cooperam para o bem daqueles que amam a Deus...",
+                  explicacao: "Mostra que Deus tem um propósito em todas as situações para os que o amam."
+                
+                },
+                {
+                  referencia: "Mateus 11:28",
+                  texto: "Vinde a mim, todos os que estais cansados e oprimidos, e eu vos aliviarei.",
+                  explicacao: "Jesus convida os cansados a encontrarem descanso nele."
+                
+                },
+                {
+                  referencia: "Isaías 41:10",
+                  texto: "Não temas, porque eu sou contigo; não te assombres, porque eu sou o teu Deus...",
+                  explicacao: "Promessa de presença, força e ajuda de Deus em tempos difíceis."
+                }
     ];
 
     const container = document.getElementById("versiculos-container");
