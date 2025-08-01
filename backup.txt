@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -142,7 +143,7 @@
 
   <header>
     <h1>+ de 100 Versículos Bíblicos Completos com Explicações</h1>
-    <a href="2.html" style="text-decoration: none;">
+    <a href='/2' style='text-decoration: none;'>
       <button style="padding: 10px 20px; background-color: #f04e23; color: white; border: none; border-radius: 5px; cursor: pointer;">
         VIDEOS DO DIA
       </button>
@@ -192,7 +193,8 @@
     document.getElementById("conteudo-unico").textContent = gerarConteudoUnico();
 
     // Versículos
-  {
+    const versiculos = [
+                      {
                         referencia: "João 3:16",
                         texto: "Porque Deus amou o mundo de tal maneira que deu o seu Filho unigênito...",
                         explicacao: "Mostra o amor de Deus e o plano de salvação."
@@ -273,7 +275,7 @@
       { url: "https://hostinger.com.br?REFERRALCODE=SSNVICTORXU8", texto: "💻 Hospedagem com desconto!" },
       { url: "https://geocredibnkvitoria.com/", texto: "💸 Crédito rápido e fácil" },
       { url: "https://wa.me/5527998950540", texto: "📃 Laudo bancário em minutos" },
-      { url: "https://www.youtube.com/@gamenologia", texto: "🎮 Gamenologia: Fique por dentro!" },
+      {url:"https://espiritosantoes-com-brprincipal.pages.dev/",texto:"NÃO PERCA ESSA OPORTUNIDADE ÚNICA"},
       { url: "https://wa.me/5527999497001", texto: "🚗 Seguro de carro e consórcio - (27) 99949-7001" },
       { url: "https://wa.me/5527999497001", texto: "🏠 Cobertura para temporada em Guarapari ES - Saiba +" },
     ];
@@ -286,7 +288,7 @@
       link.href = atual.url;
       index = (index + 1) % propagandas.length;
     }
-    setInterval(atualizarPropaganda, 5000);
+    setInterval(atualizarPropaganda, 9000);
     atualizarPropaganda();
   </script>
 
